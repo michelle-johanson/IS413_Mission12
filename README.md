@@ -13,12 +13,13 @@ Add a cart summary to the main book list page.
 
 Arrange the website using the Bootstrap Grid.
 In addition, do two things with Bootstrap that we have never done before in class.
-**Bootstrap Comment**
+### Bootstrap Comment
 1. Positioned badge (`position-absolute top-0 start-100 translate-middle badge rounded-pill`) — the red item-count bubble on the Cart button in the navbar, overlaid using Bootstrap's position utility stack
 2. Input Group (`input-group input-group-sm`) — used in the Cart page to build a quantity spinner with flanking +/− buttons around a number input, creating a polished stepper control
 
 Submit a pUbLiC link to the GitHub repository along with your comment about the Bootstrap attributes you added via Learning Suite.
 
+### Run Locally
 **Terminal 1 — Backend**
 ```bash
 cd backend/BookstoreApi
