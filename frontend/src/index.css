@@ -1,0 +1,12 @@
+:root {
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  font: 18px/145% var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  max-width: 1400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
