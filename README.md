@@ -42,7 +42,7 @@ Submit a link to the GitHub repository containing your assignment via Learning S
 
 **Terminal 1 — Backend**
 ```bash
-cd backend/BowlingApi
+cd backend/BookstoreApi
 dotnet run --launch-profile http
 ```
 API runs at `http://localhost:5203`
