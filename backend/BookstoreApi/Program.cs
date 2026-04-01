@@ -23,13 +23,18 @@ app.UseHttpsRedirection();
 app.MapGet("/api/books", async (BookstoreContext db,
     int pageNum = 1,
     int pageSize = 5,
-    string sortOrder = "asc") =>
+    string sortOrder = "asc",
+    string? category = null) =>
 {
-    var query = sortOrder == "desc"
-        ? db.Books.OrderByDescending(b => b.Title)
-        : db.Books.OrderBy(b => b.Title);
+    var filtered = string.IsNullOrEmpty(category)
+        ? db.Books
+        : db.Books.Where(b => b.Category == category);
 
-    var totalCount = await db.Books.CountAsync();
+    var query = sortOrder == "desc"
+        ? filtered.OrderByDescending(b => b.Title)
+        : filtered.OrderBy(b => b.Title);
+
+    var totalCount = await filtered.CountAsync();
 
     var books = await query
         .Skip((pageNum - 1) * pageSize)
@@ -37,6 +42,17 @@ app.MapGet("/api/books", async (BookstoreContext db,
         .ToListAsync();
 
     return Results.Ok(new { books, totalCount });
+});
+
+app.MapGet("/api/categories", async (BookstoreContext db) =>
+{
+    var categories = await db.Books
+        .Select(b => b.Category)
+        .Distinct()
+        .OrderBy(c => c)
+        .ToListAsync();
+
+    return Results.Ok(categories);
 });
 
 app.Run();
