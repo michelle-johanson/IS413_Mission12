@@ -33,9 +33,7 @@ function BookList({
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [category, setCategory] = useState(savedCategory);
   const [categories, setCategories] = useState<string[]>([]);
-  const [addedBookId, setAddedBookId] = useState<number | null>(null);
-
-  const { addToCart, cartCount, cartTotal } = useCart();
+  const { addToCart, cartCount, cartTotal, cartItems } = useCart();
 
   // Load categories once
   useEffect(() => {
@@ -81,8 +79,6 @@ function BookList({
 
   function handleAddToCart(book: Book) {
     addToCart({ bookID: book.bookID, title: book.title, price: book.price });
-    setAddedBookId(book.bookID);
-    setTimeout(() => setAddedBookId(null), 1500);
   }
 
   return (
@@ -205,16 +201,17 @@ function BookList({
                     <td>{book.pageCount}</td>
                     <td>${book.price.toFixed(2)}</td>
                     <td>
-                      <button
-                        className={`btn btn-sm ${
-                          addedBookId === book.bookID
-                            ? 'btn-success'
-                            : 'btn-outline-primary'
-                        }`}
-                        onClick={() => handleAddToCart(book)}
-                      >
-                        {addedBookId === book.bookID ? '✓ Added' : '+ Add'}
-                      </button>
+                      {(() => {
+                        const qty = cartItems.find((i) => i.bookID === book.bookID)?.quantity ?? 0;
+                        return (
+                          <button
+                            className={`btn btn-sm ${qty > 0 ? 'btn-success' : 'btn-outline-primary'}`}
+                            onClick={() => handleAddToCart(book)}
+                          >
+                            {qty > 0 ? `✓ Added (${qty})` : '+ Add'}
+                          </button>
+                        );
+                      })()}
                     </td>
                   </tr>
                 ))}
