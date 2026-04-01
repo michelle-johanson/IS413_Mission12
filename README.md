@@ -39,3 +39,17 @@ Add the ability to allow the user to sort by book title. (#notcoveredinthevideos
 help you learn how you can do it and then implement it.
 
 Submit a link to the GitHub repository containing your assignment via Learning Suite.
+
+**Terminal 1 — Backend**
+```bash
+cd backend/BowlingApi
+dotnet run --launch-profile http
+```
+API runs at `http://localhost:5203`
+
+**Terminal 2 — Frontend**
+```bash
+cd frontend
+npm install
+npm run dev
+```
