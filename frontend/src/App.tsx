@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './App.css';
 import BookList from './components/BookList';
 import Cart from './components/Cart';
+import Layout from './components/Layout';
 import { CartProvider } from './context/CartContext';
 
 type View = 'books' | 'cart';
@@ -18,16 +19,22 @@ function App() {
 
   return (
     <CartProvider>
-      {view === 'books' ? (
-        <BookList
-          onGoToCart={() => setView('cart')}
-          savedPage={savedPage}
-          savedCategory={savedCategory}
-          onBrowseStateChange={handleBrowseStateChange}
-        />
-      ) : (
-        <Cart onContinueShopping={() => setView('books')} />
-      )}
+      <Layout
+        onGoToCart={() => setView('cart')}
+        onGoToBooks={() => setView('books')}
+        currentView={view}
+      >
+        {view === 'books' ? (
+          <BookList
+            onGoToCart={() => setView('cart')}
+            savedPage={savedPage}
+            savedCategory={savedCategory}
+            onBrowseStateChange={handleBrowseStateChange}
+          />
+        ) : (
+          <Cart onContinueShopping={() => setView('books')} />
+        )}
+      </Layout>
     </CartProvider>
   );
 }

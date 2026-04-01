@@ -86,104 +86,92 @@ function BookList({
   }
 
   return (
-    <div className="container-fluid mt-4">
-      <div className="row mb-4 align-items-center">
-        <div className="col">
-          <h1 className="mb-0">Bookstore</h1>
-        </div>
-        {/* Cart Summary Badge — Bootstrap badge + offcanvas trigger (new Bootstrap feature #1) */}
-        <div className="col-auto">
-          <button
-            className="btn btn-outline-dark position-relative"
-            onClick={onGoToCart}
-          >
-            <i className="bi bi-cart3 me-1"></i>
-            Cart
-            {cartCount > 0 && (
-              <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                {cartCount}
-              </span>
-            )}
-          </button>
+    <>
+      {/* Hero banner */}
+      <div className="hero-banner">
+        <div className="container">
+          <h1>Browse Our Collection</h1>
+          <p className="lead">Thousands of titles across every genre — find your next great read.</p>
         </div>
       </div>
 
-      {/* Cart summary alert — shown when cart has items */}
-      {cartCount > 0 && (
-        <div className="alert alert-success d-flex justify-content-between align-items-center">
-          <span>
-            <strong>{cartCount}</strong> item{cartCount !== 1 ? 's' : ''} in
-            your cart — Total: <strong>${cartTotal.toFixed(2)}</strong>
-          </span>
-          <button className="btn btn-sm btn-success" onClick={onGoToCart}>
-            View Cart &rarr;
-          </button>
-        </div>
-      )}
+      <div className="container py-4">
 
-      {/* Filters row using Bootstrap Grid */}
-      <div className="row g-3 mb-3 align-items-end">
-        {/* Category filter — Bootstrap select */}
-        <div className="col-12 col-md-4 col-lg-3">
-          <label htmlFor="categorySelect" className="form-label fw-semibold">
-            Filter by Category
-          </label>
-          <select
-            id="categorySelect"
-            className="form-select"
-            value={category}
-            onChange={handleCategoryChange}
-          >
-            <option value="">All Categories</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Page size */}
-        <div className="col-auto">
-          <label htmlFor="pageSizeSelect" className="form-label fw-semibold">
-            Results per page
-          </label>
-          <select
-            id="pageSizeSelect"
-            className="form-select form-select-sm w-auto"
-            value={pageSize}
-            onChange={handlePageSizeChange}
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={25}>25</option>
-          </select>
-        </div>
-
-        {/* Category pill badge (new Bootstrap feature #2: badge pills to show active filter) */}
-        {category && (
-          <div className="col-auto d-flex align-items-end">
-            <span className="badge rounded-pill bg-primary fs-6 py-2 px-3">
-              {category}{' '}
-              <button
-                className="btn-close btn-close-white ms-1"
-                style={{ fontSize: '0.6rem' }}
-                aria-label="Clear filter"
-                onClick={() => {
-                  setCategory('');
-                  setPageNum(1);
-                }}
-              />
+        {/* Cart summary alert — shown when cart has items */}
+        {cartCount > 0 && (
+          <div className="alert alert-success d-flex justify-content-between align-items-center mb-4">
+            <span>
+              <strong>{cartCount}</strong> item{cartCount !== 1 ? 's' : ''} in
+              your cart &mdash; Total: <strong>${cartTotal.toFixed(2)}</strong>
             </span>
+            <button className="btn btn-sm btn-success" onClick={onGoToCart}>
+              View Cart &rarr;
+            </button>
           </div>
         )}
-      </div>
 
-      {/* Book table */}
-      <div className="row">
-        <div className="col-12">
+        <div className="content-card">
+          {/* Filters row */}
+          <div className="row g-3 mb-4 align-items-end">
+            {/* Category filter */}
+            <div className="col-12 col-md-4 col-lg-3">
+              <label htmlFor="categorySelect" className="form-label fw-semibold">
+                Filter by Category
+              </label>
+              <select
+                id="categorySelect"
+                className="form-select"
+                value={category}
+                onChange={handleCategoryChange}
+              >
+                <option value="">All Categories</option>
+                {categories.map((cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Page size */}
+            <div className="col-auto">
+              <label htmlFor="pageSizeSelect" className="form-label fw-semibold">
+                Results per page
+              </label>
+              <select
+                id="pageSizeSelect"
+                className="form-select form-select-sm w-auto"
+                value={pageSize}
+                onChange={handlePageSizeChange}
+              >
+                <option value={5}>5</option>
+                <option value={10}>10</option>
+                <option value={25}>25</option>
+              </select>
+            </div>
+
+            {/* Active category pill (Bootstrap feature #2) */}
+            {category && (
+              <div className="col-auto d-flex align-items-end">
+                <span className="badge rounded-pill bg-primary fs-6 py-2 px-3">
+                  {category}{' '}
+                  <button
+                    className="btn-close btn-close-white ms-1"
+                    style={{ fontSize: '0.6rem' }}
+                    aria-label="Clear filter"
+                    onClick={() => {
+                      setCategory('');
+                      setPageNum(1);
+                    }}
+                  />
+                </span>
+              </div>
+            )}
+          </div>
+
+          {/* Book table */}
           <div className="table-responsive">
-            <table className="table table-striped table-bordered table-hover align-middle">
+            <table className="table table-striped table-bordered table-hover align-middle mb-0">
               <thead className="table-dark">
                 <tr>
                   <th>
@@ -233,35 +221,36 @@ function BookList({
               </tbody>
             </table>
           </div>
-        </div>
-      </div>
 
-      {/* Pagination row */}
-      <div className="row align-items-center mt-2">
-        <div className="col-auto">
-          <span className="text-muted">
-            Page {pageNum} of {totalPages || 1} &nbsp;({totalCount} book
-            {totalCount !== 1 ? 's' : ''})
-          </span>
+          {/* Pagination */}
+          <div className="row align-items-center mt-3">
+            <div className="col-auto">
+              <span className="text-muted small">
+                Page {pageNum} of {totalPages || 1} &nbsp;&mdash;&nbsp;
+                {totalCount} book{totalCount !== 1 ? 's' : ''}
+              </span>
+            </div>
+            <div className="col-auto ms-auto d-flex gap-2">
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => setPageNum((p) => p - 1)}
+                disabled={pageNum === 1}
+              >
+                &laquo; Prev
+              </button>
+              <button
+                className="btn btn-outline-secondary btn-sm"
+                onClick={() => setPageNum((p) => p + 1)}
+                disabled={pageNum >= totalPages}
+              >
+                Next &raquo;
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="col-auto ms-auto d-flex gap-2">
-          <button
-            className="btn btn-outline-secondary btn-sm"
-            onClick={() => setPageNum((p) => p - 1)}
-            disabled={pageNum === 1}
-          >
-            &laquo; Prev
-          </button>
-          <button
-            className="btn btn-outline-secondary btn-sm"
-            onClick={() => setPageNum((p) => p + 1)}
-            disabled={pageNum >= totalPages}
-          >
-            Next &raquo;
-          </button>
-        </div>
+
       </div>
-    </div>
+    </>
   );
 }
 
