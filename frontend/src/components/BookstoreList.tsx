@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import type { Book } from './types/Book';
-import { BASE_URL } from './api/backendUrl';
+import type { Book } from '../types/Book';
+import { BASE_URL } from '../api/backendUrl';
 
-function BookstoreList() {
+function BookstoreList({ selectedCategories }: { selectedCategories: string[] }) {
   const [books, setBooks] = useState<Book[]>([]);
   const [pageSize, setPageSize] = useState<number>(5);
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -11,15 +11,18 @@ function BookstoreList() {
 
   useEffect(() => {
     const fetchBooks = async () => {
+      const categoryParams = selectedCategories
+        .map((c) => `categories=${encodeURIComponent(c)}`)
+        .join('&');
       const response = await fetch(
-        `${BASE_URL}/Bookstore/AllBooks?pageSize=${pageSize}&pageNumber=${pageNumber}&sortOrder=${sortOrder}`
+        `${BASE_URL}/Bookstore/AllBooks?pageSize=${pageSize}&pageNumber=${pageNumber}&sortOrder=${sortOrder}${categoryParams ? '&' + categoryParams : ''}`
       );
       const data = await response.json();
       setBooks(data.books);
       setTotalPages(Math.ceil(data.totalBooks / pageSize));
     };
     fetchBooks();
-  }, [pageSize, pageNumber, sortOrder]);
+  }, [pageSize, pageNumber, sortOrder, selectedCategories]);
 
   const toggleSort = () => {
     setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');

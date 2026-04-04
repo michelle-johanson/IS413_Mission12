@@ -14,13 +14,18 @@ namespace Bookstore.API.Controllers
         public BookstoreController(BookstoreDbContext context) => _context = context;
 
         [HttpGet("AllBooks")]
-        public IActionResult GetBooks(int pageSize, int pageNumber, string? sortOrder = "asc")
+        public IActionResult GetBooks(int pageSize, int pageNumber, string? sortOrder = "asc", [FromQuery] List<string>? categories = null)
         {
             var query = _context.Books.AsQueryable();
 
             query = sortOrder == "desc"
                 ? query.OrderByDescending(b => b.Title)
                 : query.OrderBy(b => b.Title);
+
+            if (categories != null && categories.Any())
+            {
+                query = query.Where(c => categories.Contains(c.Category));
+            }
 
             var books = query
                 .Skip((pageNumber - 1) * pageSize)
@@ -34,13 +39,15 @@ namespace Bookstore.API.Controllers
             });
         }
 
-        [HttpGet("SpecialBooks")]
-        public IEnumerable<Book> GetSpecialBooks()
+        [HttpGet("GetCategories")]
+        public IActionResult GetCategories ()
         {
-            var something = _context.Books
-                .Where(b => b.Price > 20)
+            var categories = _context.Books
+                .Select(b => b.Category)
+                .Distinct()
                 .ToList();
-            return something;
+
+            return Ok(categories);
         }
     }
 }
