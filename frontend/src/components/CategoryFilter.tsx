@@ -33,20 +33,24 @@ function CategoryFilter({
     setSelectedCategories(updatedCategories);
   }
 
+  // frontend/src/components/CategoryFilter.tsx
   return (
-    <div className="category-filter">
-      <h5>Categories</h5>
-      <div className="category-list">
+    <div className="bg-white p-4 rounded shadow-sm border">
+      <h5 className="fw-bold mb-3 pb-2 border-bottom">Categories</h5>
+      <div className="d-flex flex-column gap-2">
         {categories.map((c) => (
-          <div key={c} className="category-item">
+          <div key={c} className="form-check custom-checkbox">
             <input
               type="checkbox"
               id={c}
               value={c}
-              className="category-checkbox"
+              className="form-check-input pointer"
+              checked={selectedCategories.includes(c)}
               onChange={handleCheckboxChange}
             />
-            <label htmlFor={c}>{c}</label>
+            <label className="form-check-label pointer small" htmlFor={c}>
+              {c}
+            </label>
           </div>
         ))}
       </div>
