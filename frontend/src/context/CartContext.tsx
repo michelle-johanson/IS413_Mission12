@@ -17,13 +17,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const addToCart = (item: CartItem) => {
     setCart((prevCart) => {
       const existingItem = prevCart.find((c) => c.bookId === item.bookId);
-      const updatedCart = prevCart.map((c) =>
-        c.bookId === item.bookId
-          ? { ...c, donationAmount: c.donationAmount + item.donationAmount }
-          : c
-      );
-
-      return existingItem ? updatedCart : [...prevCart, item];
+      return existingItem ? prevCart : [...prevCart, item];
     });
   };
 

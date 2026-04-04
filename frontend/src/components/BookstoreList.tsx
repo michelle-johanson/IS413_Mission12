@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import type { Book } from '../types/Book';
 import { BASE_URL } from '../api/backendUrl';
+import { useCart } from '../context/CartContext';
 
 function BookstoreList({ selectedCategories }: { selectedCategories: string[] }) {
+  const { addToCart } = useCart();
   const [books, setBooks] = useState<Book[]>([]);
   const [pageSize, setPageSize] = useState<number>(5);
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -65,6 +67,7 @@ function BookstoreList({ selectedCategories }: { selectedCategories: string[] })
             <th>Category</th>
             <th>Pages</th>
             <th>Price</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -78,6 +81,20 @@ function BookstoreList({ selectedCategories }: { selectedCategories: string[] })
               <td>{book.category}</td>
               <td>{book.pageCount}</td>
               <td>${book.price}</td>
+              <td>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() =>
+                    addToCart({
+                      bookId: book.bookId,
+                      bookName: book.title,
+                      price: book.price ?? 0,
+                    })
+                  }
+                >
+                  Add to Cart
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
