@@ -4,8 +4,12 @@
   --bs-primary-rgb: 26, 42, 58;
   --bs-secondary: #f8f9fa; /* Soft White */
   --accent-color: #d4a017; /* Action Gold */
+  --accent-color-hover: #b8860b;
   --text-main: #2c3e50;
   --border-color: #dee2e6;
+
+  /* Typography */
+  --font-main: Arial, sans-serif;
 
   /* Bootstrap Overrides */
   --bs-body-bg: var(--bs-secondary);
@@ -25,5 +29,5 @@
 }
 
 .btn-accent:hover {
-  background-color: #b8860b !important;
+  background-color: var(--accent-color-hover) !important;
 }

@@ -24,8 +24,10 @@ namespace Bookstore.API.Controllers
 
             if (categories != null && categories.Any())
             {
-                query = query.Where(c => categories.Contains(c.Category));
+                query = query.Where(c => c.Category != null && categories.Contains(c.Category));
             }
+
+            var filteredTotal = query.Count();
 
             var books = query
                 .Skip((pageNumber - 1) * pageSize)
@@ -35,7 +37,7 @@ namespace Bookstore.API.Controllers
             return Ok(new
             {
                 books,
-                totalBooks = _context.Books.Count()
+                totalBooks = filteredTotal
             });
         }
 

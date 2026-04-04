@@ -1,0 +1,13 @@
+.cart-summary {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  background: var(--bs-secondary);
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+}

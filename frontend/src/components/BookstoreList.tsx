@@ -1,3 +1,4 @@
+// frontend/src/components/BookstoreList.tsx
 import { useEffect, useState } from 'react';
 import type { Book } from '../types/Book';
 import { BASE_URL } from '../api/backendUrl';
@@ -35,25 +36,25 @@ function BookstoreList({
     setPageNumber(1);
   };
 
-  // Inside BookstoreList.tsx return...
   return (
     <div className="mt-2">
-      <div className="d-flex justify-content-between align-items-end mb-4">
-        <div>
-          <h2 className="text-secondary fw-light">Available Books</h2>
+      {/* Bootstrap Grid: Heading and Pagination Controls */}
+      <div className="row align-items-end mb-4">
+        <div className="col-md-8">
+          <h2 className="text-primary fw-bold">Available Books</h2>
           <button
-            className="btn btn-sm btn-outline-primary mt-2"
+            className="btn btn-sm btn-outline-primary"
             onClick={toggleSort}
           >
             Sort by Title {sortOrder === 'asc' ? '↑' : '↓'}
           </button>
         </div>
-        <div className="text-end">
+        <div className="col-md-4 text-end">
           <label className="form-label small text-muted mb-1">
-            Items Per Page
+            Results Per Page
           </label>
           <select
-            className="form-select form-select-sm"
+            className="form-select form-select-sm shadow-sm"
             value={pageSize}
             onChange={(e) => {
               setPageSize(Number(e.target.value));
@@ -66,43 +67,46 @@ function BookstoreList({
           </select>
         </div>
       </div>
-
-      <div className="table-responsive shadow-sm rounded">
-        <table className="table table-hover align-middle mb-0">
-          <thead className="table-dark">
+      {/* BOOTSTRAP NOVELTY #1: Table with Hover Effect and Striped Rows */}
+      <div className="table-responsive shadow rounded-4 overflow-hidden border">
+        <table className="table table-hover table-striped align-middle mb-0">
+          <thead className="table-dark text-uppercase small">
             <tr>
-              <th>Title</th>
+              <th className="ps-4">Title</th>
               <th>Author</th>
-              <th>Details</th> {/* Grouping some fields saves space */}
+              <th>Publisher & Details</th>
               <th>Category</th>
-              <th>Price</th>
-              <th>Action</th>
+              <th className="text-end">Price</th>
+              <th className="text-center pe-4">Action</th>
             </tr>
           </thead>
           <tbody>
             {books.map((book) => (
               <tr key={book.bookId}>
-                <td className="fw-bold">{book.title}</td>
+                <td className="ps-4 fw-bold text-dark">{book.title}</td>
                 <td>{book.author}</td>
                 <td>
+                  <span className="d-block small fw-bold text-secondary">
+                    {book.publisher}
+                  </span>
+                  {/* Mission 11: Displaying ISBN, Pages, and Classification */}
                   <small className="text-muted d-block">
-                    ISBN: {book.isbn}
-                  </small>
-                  <small className="text-muted d-block">
-                    Pages: {book.pageCount}
+                    ISBN: {book.isbn} | Pages: {book.pageCount} | Type:{' '}
+                    {book.classification}
                   </small>
                 </td>
                 <td>
-                  <span className="badge bg-light text-dark border">
+                  <span className="badge rounded-pill bg-light text-dark border px-3">
                     {book.category}
                   </span>
                 </td>
-                <td className="fw-bold text-success">
+                {/* BOOTSTRAP NOVELTY #2: Using Contextual text colors (text-success) for pricing */}
+                <td className="text-end fw-bold text-success font-monospace">
                   ${book.price?.toFixed(2)}
                 </td>
-                <td>
+                <td className="text-center pe-4">
                   <button
-                    className="btn btn-primary btn-sm rounded-pill px-3"
+                    className="btn btn-primary btn-sm rounded-pill px-4 shadow-sm"
                     onClick={() =>
                       addToCart({
                         bookId: book.bookId,
@@ -120,8 +124,7 @@ function BookstoreList({
           </tbody>
         </table>
       </div>
-
-      {/* Proper Bootstrap Pagination Component */}
+      {/* Bootstrap Pagination Component */}
       <nav className="mt-4 d-flex justify-content-center">
         <ul className="pagination pagination-sm">
           <li className={`page-item ${pageNumber === 1 ? 'disabled' : ''}`}>
@@ -132,6 +135,7 @@ function BookstoreList({
               Previous
             </button>
           </li>
+
           {[...Array(totalPages)].map((_, index) => (
             <li
               key={index + 1}
@@ -145,6 +149,7 @@ function BookstoreList({
               </button>
             </li>
           ))}
+
           <li
             className={`page-item ${pageNumber === totalPages ? 'disabled' : ''}`}
           >
@@ -156,7 +161,7 @@ function BookstoreList({
             </button>
           </li>
         </ul>
-      </nav>
+      </nav>{' '}
     </div>
   );
 }
